@@ -6,18 +6,18 @@ using ImGuiNET;
 
 namespace ImGuizmoNET
 {
-    public static unsafe partial class ImGuizmo
+    public unsafe partial class ImGuizmo : IImGuizmo
     {
-        public static void AllowAxisFlip(bool value)
+        public void AllowAxisFlip(bool value)
         {
             byte native_value = value ? (byte)1 : (byte)0;
             ImGuizmoNative.ImGuizmo_AllowAxisFlip(native_value);
         }
-        public static void BeginFrame()
+        public void BeginFrame()
         {
             ImGuizmoNative.ImGuizmo_BeginFrame();
         }
-        public static void DecomposeMatrixToComponents(ref float matrix, ref float translation, ref float rotation, ref float scale)
+        public void DecomposeMatrixToComponents(ref float matrix, ref float translation, ref float rotation, ref float scale)
         {
             fixed (float* native_matrix = &matrix)
             {
@@ -33,7 +33,7 @@ namespace ImGuizmoNET
                 }
             }
         }
-        public static void DrawCubes(ref float view, ref float projection, ref float matrices, int matrixCount)
+        public void DrawCubes(ref float view, ref float projection, ref float matrices, int matrixCount)
         {
             fixed (float* native_view = &view)
             {
@@ -46,7 +46,7 @@ namespace ImGuizmoNET
                 }
             }
         }
-        public static void DrawGrid(ref float view, ref float projection, ref float matrix, float gridSize)
+        public void DrawGrid(ref float view, ref float projection, ref float matrix, float gridSize)
         {
             fixed (float* native_view = &view)
             {
@@ -59,27 +59,27 @@ namespace ImGuizmoNET
                 }
             }
         }
-        public static void Enable(bool enable)
+        public void Enable(bool enable)
         {
             byte native_enable = enable ? (byte)1 : (byte)0;
             ImGuizmoNative.ImGuizmo_Enable(native_enable);
         }
-        public static bool IsOver()
+        public bool IsOver()
         {
             byte ret = ImGuizmoNative.ImGuizmo_IsOverNil();
             return ret != 0;
         }
-        public static bool IsOver(OPERATION op)
+        public bool IsOver(OPERATION op)
         {
             byte ret = ImGuizmoNative.ImGuizmo_IsOverOPERATION(op);
             return ret != 0;
         }
-        public static bool IsUsing()
+        public bool IsUsing()
         {
             byte ret = ImGuizmoNative.ImGuizmo_IsUsing();
             return ret != 0;
         }
-        public static bool Manipulate(ref float view, ref float projection, OPERATION operation, MODE mode, ref float matrix)
+        public bool Manipulate(ref float view, ref float projection, OPERATION operation, MODE mode, ref float matrix)
         {
             float* deltaMatrix = null;
             float* snap = null;
@@ -97,7 +97,7 @@ namespace ImGuizmoNET
                 }
             }
         }
-        public static bool Manipulate(ref float view, ref float projection, OPERATION operation, MODE mode, ref float matrix, ref float deltaMatrix)
+        public bool Manipulate(ref float view, ref float projection, OPERATION operation, MODE mode, ref float matrix, ref float deltaMatrix)
         {
             float* snap = null;
             float* localBounds = null;
@@ -117,7 +117,7 @@ namespace ImGuizmoNET
                 }
             }
         }
-        public static bool Manipulate(ref float view, ref float projection, OPERATION operation, MODE mode, ref float matrix, ref float deltaMatrix, ref float snap)
+        public bool Manipulate(ref float view, ref float projection, OPERATION operation, MODE mode, ref float matrix, ref float deltaMatrix, ref float snap)
         {
             float* localBounds = null;
             float* boundsSnap = null;
@@ -139,7 +139,7 @@ namespace ImGuizmoNET
                 }
             }
         }
-        public static bool Manipulate(ref float view, ref float projection, OPERATION operation, MODE mode, ref float matrix, ref float deltaMatrix, ref float snap, ref float localBounds)
+        public bool Manipulate(ref float view, ref float projection, OPERATION operation, MODE mode, ref float matrix, ref float deltaMatrix, ref float snap, ref float localBounds)
         {
             float* boundsSnap = null;
             fixed (float* native_view = &view)
@@ -163,7 +163,7 @@ namespace ImGuizmoNET
                 }
             }
         }
-        public static bool Manipulate(ref float view, ref float projection, OPERATION operation, MODE mode, ref float matrix, ref float deltaMatrix, ref float snap, ref float localBounds, ref float boundsSnap)
+        public bool Manipulate(ref float view, ref float projection, OPERATION operation, MODE mode, ref float matrix, ref float deltaMatrix, ref float snap, ref float localBounds, ref float boundsSnap)
         {
             fixed (float* native_view = &view)
             {
@@ -189,7 +189,7 @@ namespace ImGuizmoNET
                 }
             }
         }
-        public static void RecomposeMatrixFromComponents(ref float translation, ref float rotation, ref float scale, ref float matrix)
+        public void RecomposeMatrixFromComponents(ref float translation, ref float rotation, ref float scale, ref float matrix)
         {
             fixed (float* native_translation = &translation)
             {
@@ -205,43 +205,69 @@ namespace ImGuizmoNET
                 }
             }
         }
-        public static void SetDrawlist()
+        public void SetDrawlist()
         {
             ImDrawList* drawlist = null;
             ImGuizmoNative.ImGuizmo_SetDrawlist(drawlist);
         }
-        public static void SetDrawlist(ImDrawListPtr drawlist)
+        public void SetDrawlist(ImDrawListPtr drawlist)
         {
             ImDrawList* native_drawlist = drawlist.NativePtr;
             ImGuizmoNative.ImGuizmo_SetDrawlist(native_drawlist);
         }
-        public static void SetGizmoSizeClipSpace(float value)
+        public void SetGizmoSizeClipSpace(float value)
         {
             ImGuizmoNative.ImGuizmo_SetGizmoSizeClipSpace(value);
         }
-        public static void SetID(int id)
+        public void SetID(int id)
         {
             ImGuizmoNative.ImGuizmo_SetID(id);
         }
-        public static void SetImGuiContext(IntPtr ctx)
+        public void SetImGuiContext(IntPtr ctx)
         {
             ImGuizmoNative.ImGuizmo_SetImGuiContext(ctx);
         }
-        public static void SetOrthographic(bool isOrthographic)
+        public void SetOrthographic(bool isOrthographic)
         {
             byte native_isOrthographic = isOrthographic ? (byte)1 : (byte)0;
             ImGuizmoNative.ImGuizmo_SetOrthographic(native_isOrthographic);
         }
-        public static void SetRect(float x, float y, float width, float height)
+        public void SetRect(float x, float y, float width, float height)
         {
             ImGuizmoNative.ImGuizmo_SetRect(x, y, width, height);
         }
-        public static void ViewManipulate(ref float view, float length, Vector2 position, Vector2 size, uint backgroundColor)
+        public void ViewManipulate(ref float view, float length, Vector2 position, Vector2 size, uint backgroundColor)
         {
             fixed (float* native_view = &view)
             {
                 ImGuizmoNative.ImGuizmo_ViewManipulate(native_view, length, position, size, backgroundColor);
             }
         }
+    }
+    public unsafe interface IImGuizmo
+    {
+        void AllowAxisFlip(bool value);
+        void BeginFrame();
+        void DecomposeMatrixToComponents(ref float matrix, ref float translation, ref float rotation, ref float scale);
+        void DrawCubes(ref float view, ref float projection, ref float matrices, int matrixCount);
+        void DrawGrid(ref float view, ref float projection, ref float matrix, float gridSize);
+        void Enable(bool enable);
+        bool IsOver();
+        bool IsOver(OPERATION op);
+        bool IsUsing();
+        bool Manipulate(ref float view, ref float projection, OPERATION operation, MODE mode, ref float matrix);
+        bool Manipulate(ref float view, ref float projection, OPERATION operation, MODE mode, ref float matrix, ref float deltaMatrix);
+        bool Manipulate(ref float view, ref float projection, OPERATION operation, MODE mode, ref float matrix, ref float deltaMatrix, ref float snap);
+        bool Manipulate(ref float view, ref float projection, OPERATION operation, MODE mode, ref float matrix, ref float deltaMatrix, ref float snap, ref float localBounds);
+        bool Manipulate(ref float view, ref float projection, OPERATION operation, MODE mode, ref float matrix, ref float deltaMatrix, ref float snap, ref float localBounds, ref float boundsSnap);
+        void RecomposeMatrixFromComponents(ref float translation, ref float rotation, ref float scale, ref float matrix);
+        void SetDrawlist();
+        void SetDrawlist(ImDrawListPtr drawlist);
+        void SetGizmoSizeClipSpace(float value);
+        void SetID(int id);
+        void SetImGuiContext(IntPtr ctx);
+        void SetOrthographic(bool isOrthographic);
+        void SetRect(float x, float y, float width, float height);
+        void ViewManipulate(ref float view, float length, Vector2 position, Vector2 size, uint backgroundColor);
     }
 }

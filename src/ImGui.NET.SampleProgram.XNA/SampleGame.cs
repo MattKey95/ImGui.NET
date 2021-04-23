@@ -25,6 +25,7 @@ namespace ImGuiNET.SampleProgram.XNA
             _graphics.PreferMultiSampling = true;
 
             IsMouseVisible = true;
+            _imgui = new ImGui();
         }
 
         protected override void Initialize()
@@ -46,7 +47,7 @@ namespace ImGuiNET.SampleProgram.XNA
 				return new Color(red, 1, 1);
 			});
 
-			// Then, bind it to an ImGui-friendly pointer, that we can use during regular ImGui.** calls (see below)
+			// Then, bind it to an ImGui-friendly pointer, that we can use during regular _imgui.** calls (see below)
 			_imGuiTexture = _imGuiRenderer.BindTexture(_xnaTexture);
 
             base.LoadContent();
@@ -75,39 +76,40 @@ namespace ImGuiNET.SampleProgram.XNA
         private bool show_another_window = false;
         private Num.Vector3 clear_color = new Num.Vector3(114f / 255f, 144f / 255f, 154f / 255f);
         private byte[] _textBuffer = new byte[100];
+        private ImGui _imgui;
 
         protected virtual void ImGuiLayout()
         {
             // 1. Show a simple window
-            // Tip: if we don't call ImGui.Begin()/ImGui.End() the widgets appears in a window automatically called "Debug"
+            // Tip: if we don't call _imgui.Begin()/_imgui.End() the widgets appears in a window automatically called "Debug"
             {
-                ImGui.Text("Hello, world!");
-                ImGui.SliderFloat("float", ref f, 0.0f, 1.0f, string.Empty);
-                ImGui.ColorEdit3("clear color", ref clear_color);
-                if (ImGui.Button("Test Window")) show_test_window = !show_test_window;
-                if (ImGui.Button("Another Window")) show_another_window = !show_another_window;
-                ImGui.Text(string.Format("Application average {0:F3} ms/frame ({1:F1} FPS)", 1000f / ImGui.GetIO().Framerate, ImGui.GetIO().Framerate));
+                _imgui.Text("Hello, world!");
+                _imgui.SliderFloat("float", ref f, 0.0f, 1.0f, string.Empty);
+                _imgui.ColorEdit3("clear color", ref clear_color);
+                if (_imgui.Button("Test Window")) show_test_window = !show_test_window;
+                if (_imgui.Button("Another Window")) show_another_window = !show_another_window;
+                _imgui.Text(string.Format("Application average {0:F3} ms/frame ({1:F1} FPS)", 1000f / _imgui.GetIO().Framerate, _imgui.GetIO().Framerate));
 
-                ImGui.InputText("Text input", _textBuffer, 100);
+                _imgui.InputText("Text input", _textBuffer, 100);
 
-                ImGui.Text("Texture sample");
-                ImGui.Image(_imGuiTexture, new Num.Vector2(300, 150), Num.Vector2.Zero, Num.Vector2.One, Num.Vector4.One, Num.Vector4.One); // Here, the previously loaded texture is used
+                _imgui.Text("Texture sample");
+                _imgui.Image(_imGuiTexture, new Num.Vector2(300, 150), Num.Vector2.Zero, Num.Vector2.One, Num.Vector4.One, Num.Vector4.One); // Here, the previously loaded texture is used
             }
 
             // 2. Show another simple window, this time using an explicit Begin/End pair
             if (show_another_window)
             {
-                ImGui.SetNextWindowSize(new Num.Vector2(200, 100), ImGuiCond.FirstUseEver);
-                ImGui.Begin("Another Window", ref show_another_window);
-                ImGui.Text("Hello");
-                ImGui.End();
+                _imgui.SetNextWindowSize(new Num.Vector2(200, 100), ImGuiCond.FirstUseEver);
+                _imgui.Begin("Another Window", ref show_another_window);
+                _imgui.Text("Hello");
+                _imgui.End();
             }
 
-            // 3. Show the ImGui test window. Most of the sample code is in ImGui.ShowTestWindow()
+            // 3. Show the ImGui test window. Most of the sample code is in _imgui.ShowTestWindow()
             if (show_test_window)
             {
-                ImGui.SetNextWindowPos(new Num.Vector2(650, 20), ImGuiCond.FirstUseEver);
-                ImGui.ShowDemoWindow(ref show_test_window);
+                _imgui.SetNextWindowPos(new Num.Vector2(650, 20), ImGuiCond.FirstUseEver);
+                _imgui.ShowDemoWindow(ref show_test_window);
             }
         }
 

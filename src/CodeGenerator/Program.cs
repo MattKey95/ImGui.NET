@@ -354,7 +354,8 @@ namespace CodeGenerator
                 }
                 writer.WriteLine(string.Empty);
                 writer.PushBlock($"namespace {projectNamespace}");
-                writer.PushBlock($"public static unsafe partial class {classPrefix}");
+                var functions = new List<string>();
+                writer.PushBlock($"public unsafe partial class {classPrefix} : I{classPrefix}");
                 foreach (FunctionDefinition fd in defs.Functions)
                 {
                     if (TypeInfo.SkippedFunctions.Contains(fd.Name)) { continue; }
@@ -395,10 +396,20 @@ namespace CodeGenerator
                             {
                                 defaults.Add(orderedDefaults[j].Key, orderedDefaults[j].Value);
                             }
-                            EmitOverload(writer, overload, defaults, null, classPrefix);
+                            var function = EmitOverload(writer, overload, defaults, null, classPrefix);
+                            if (function != null)
+                                functions.Add(function);
                         }
                     }
                 }
+                writer.PopBlock();
+
+                //Write interface
+                writer.PushBlock($"public unsafe interface I{classPrefix}");
+
+                foreach (var function in functions)
+                    writer.WriteLine(function);
+                
                 writer.PopBlock();
                 writer.PopBlock();
             }
@@ -436,7 +447,7 @@ namespace CodeGenerator
             throw new InvalidOperationException();
         }
 
-        private static void EmitOverload(
+        private static string EmitOverload(
             CSharpCodeWriter writer,
             OverloadDefinition overload,
             Dictionary<string, string> defaultValues,
@@ -446,7 +457,7 @@ namespace CodeGenerator
             if (overload.Parameters.Where(tr => tr.Name.EndsWith("_begin") || tr.Name.EndsWith("_end"))
                 .Any(tr => !defaultValues.ContainsKey(tr.Name)))
             {
-                return;
+                return null;
             }
 
             Debug.Assert(!overload.IsMemberFunction || selfName != null);
@@ -650,7 +661,8 @@ namespace CodeGenerator
             string friendlyName = overload.FriendlyName;
 
             string staticPortion = selfName == null ? "static " : string.Empty;
-            writer.PushBlock($"public {staticPortion}{overrideRet ?? safeRet} {friendlyName}({invocationList})");
+            var functionDefinition = $"{overrideRet ?? safeRet} {friendlyName}({invocationList});";
+            writer.PushBlock($"public {overrideRet ?? safeRet} {friendlyName}({invocationList})");
             foreach (string line in preCallLines)
             {
                 writer.WriteLine(line);
@@ -740,6 +752,7 @@ namespace CodeGenerator
             }
 
             writer.PopBlock();
+            return functionDefinition;
         }
 
         private static string GetSafeType(string nativeRet)

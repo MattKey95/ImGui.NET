@@ -6,9 +6,9 @@ using System.Text;
 
 namespace ImGuiNET
 {
-    public static unsafe partial class ImGui
+    public unsafe partial class ImGui
     {
-        public static bool InputText(
+        public  bool InputText(
             string label,
             byte[] buf,
             uint buf_size)
@@ -16,7 +16,7 @@ namespace ImGuiNET
             return InputText(label, buf, buf_size, 0, null, IntPtr.Zero);
         }
 
-        public static bool InputText(
+        public  bool InputText(
             string label,
             byte[] buf,
             uint buf_size,
@@ -25,7 +25,7 @@ namespace ImGuiNET
             return InputText(label, buf, buf_size, flags, null, IntPtr.Zero);
         }
 
-        public static bool InputText(
+        public  bool InputText(
             string label,
             byte[] buf,
             uint buf_size,
@@ -35,7 +35,7 @@ namespace ImGuiNET
             return InputText(label, buf, buf_size, flags, callback, IntPtr.Zero);
         }
 
-        public static bool InputText(
+        public  bool InputText(
             string label,
             byte[] buf,
             uint buf_size,
@@ -70,25 +70,25 @@ namespace ImGuiNET
             return ret;
         }
 
-        public static bool InputText(
+        public  bool InputText(
             string label,
             ref string input,
             uint maxLength) => InputText(label, ref input, maxLength, 0, null, IntPtr.Zero);
 
-        public static bool InputText(
+        public  bool InputText(
             string label,
             ref string input,
             uint maxLength,
             ImGuiInputTextFlags flags) => InputText(label, ref input, maxLength, flags, null, IntPtr.Zero);
 
-        public static bool InputText(
+        public  bool InputText(
             string label,
             ref string input,
             uint maxLength,
             ImGuiInputTextFlags flags,
             ImGuiInputTextCallback callback) => InputText(label, ref input, maxLength, flags, callback, IntPtr.Zero);
 
-        public static bool InputText(
+        public  bool InputText(
             string label,
             ref string input,
             uint maxLength,
@@ -156,20 +156,20 @@ namespace ImGuiNET
             return result != 0;
         }
 
-        public static bool InputTextMultiline(
+        public  bool InputTextMultiline(
             string label,
             ref string input,
             uint maxLength,
             Vector2 size) => InputTextMultiline(label, ref input, maxLength, size, 0, null, IntPtr.Zero);
 
-        public static bool InputTextMultiline(
+        public  bool InputTextMultiline(
             string label,
             ref string input,
             uint maxLength,
             Vector2 size,
             ImGuiInputTextFlags flags) => InputTextMultiline(label, ref input, maxLength, size, flags, null, IntPtr.Zero);
 
-        public static bool InputTextMultiline(
+        public  bool InputTextMultiline(
             string label,
             ref string input,
             uint maxLength,
@@ -177,7 +177,7 @@ namespace ImGuiNET
             ImGuiInputTextFlags flags,
             ImGuiInputTextCallback callback) => InputTextMultiline(label, ref input, maxLength, size, flags, callback, IntPtr.Zero);
 
-        public static bool InputTextMultiline(
+        public  bool InputTextMultiline(
             string label,
             ref string input,
             uint maxLength,
@@ -247,20 +247,20 @@ namespace ImGuiNET
             return result != 0;
         }
 
-        public static bool InputTextWithHint(
+        public  bool InputTextWithHint(
             string label,
             string hint,
             ref string input,
             uint maxLength) => InputTextWithHint(label, hint, ref input, maxLength, 0, null, IntPtr.Zero);
 
-        public static bool InputTextWithHint(
+        public  bool InputTextWithHint(
             string label,
             string hint,
             ref string input,
             uint maxLength,
             ImGuiInputTextFlags flags) => InputTextWithHint(label, hint, ref input, maxLength, flags, null, IntPtr.Zero);
 
-        public static bool InputTextWithHint(
+        public  bool InputTextWithHint(
             string label,
             string hint,
             ref string input,
@@ -268,7 +268,7 @@ namespace ImGuiNET
             ImGuiInputTextFlags flags,
             ImGuiInputTextCallback callback) => InputTextWithHint(label, hint, ref input, maxLength, flags, callback, IntPtr.Zero);
 
-        public static bool InputTextWithHint(
+        public  bool InputTextWithHint(
             string label,
             string hint,
             ref string input,
@@ -355,40 +355,40 @@ namespace ImGuiNET
             return result != 0;
         }
 
-        public static Vector2 CalcTextSize(string text)
+        public  Vector2 CalcTextSize(string text)
             => CalcTextSizeImpl(text);
 
-        public static Vector2 CalcTextSize(string text, int start)
+        public  Vector2 CalcTextSize(string text, int start)
             => CalcTextSizeImpl(text, start);
 
-        public static Vector2 CalcTextSize(string text, float wrapWidth)
+        public  Vector2 CalcTextSize(string text, float wrapWidth)
             => CalcTextSizeImpl(text, wrapWidth: wrapWidth);
 
-        public static Vector2 CalcTextSize(string text, bool hideTextAfterDoubleHash)
+        public  Vector2 CalcTextSize(string text, bool hideTextAfterDoubleHash)
             => CalcTextSizeImpl(text, hideTextAfterDoubleHash: hideTextAfterDoubleHash);
 
-        public static Vector2 CalcTextSize(string text, int start, int length)
+        public  Vector2 CalcTextSize(string text, int start, int length)
             => CalcTextSizeImpl(text, start, length);
 
-        public static Vector2 CalcTextSize(string text, int start, bool hideTextAfterDoubleHash)
+        public  Vector2 CalcTextSize(string text, int start, bool hideTextAfterDoubleHash)
             => CalcTextSizeImpl(text, start, hideTextAfterDoubleHash: hideTextAfterDoubleHash);
 
-        public static Vector2 CalcTextSize(string text, int start, float wrapWidth)
+        public  Vector2 CalcTextSize(string text, int start, float wrapWidth)
             => CalcTextSizeImpl(text, start, wrapWidth: wrapWidth);
 
-        public static Vector2 CalcTextSize(string text, bool hideTextAfterDoubleHash, float wrapWidth)
+        public  Vector2 CalcTextSize(string text, bool hideTextAfterDoubleHash, float wrapWidth)
             => CalcTextSizeImpl(text, hideTextAfterDoubleHash: hideTextAfterDoubleHash, wrapWidth: wrapWidth);
 
-        public static Vector2 CalcTextSize(string text, int start, int length, bool hideTextAfterDoubleHash)
+        public  Vector2 CalcTextSize(string text, int start, int length, bool hideTextAfterDoubleHash)
             => CalcTextSizeImpl(text, start, length, hideTextAfterDoubleHash);
 
-        public static Vector2 CalcTextSize(string text, int start, int length, float wrapWidth)
+        public  Vector2 CalcTextSize(string text, int start, int length, float wrapWidth)
             => CalcTextSizeImpl(text, start, length, wrapWidth: wrapWidth);
 
-        public static Vector2 CalcTextSize(string text, int start, int length, bool hideTextAfterDoubleHash, float wrapWidth)
+        public  Vector2 CalcTextSize(string text, int start, int length, bool hideTextAfterDoubleHash, float wrapWidth)
             => CalcTextSizeImpl(text, start, length, hideTextAfterDoubleHash, wrapWidth);
 
-        private static Vector2 CalcTextSizeImpl(
+        private  Vector2 CalcTextSizeImpl(
             string text,
             int start = 0,
             int? length = null,
@@ -428,7 +428,7 @@ namespace ImGuiNET
             return ret;
         }
 
-        public static bool InputText(
+        public  bool InputText(
             string label,
             IntPtr buf,
             uint buf_size)
@@ -436,7 +436,7 @@ namespace ImGuiNET
             return InputText(label, buf, buf_size, 0, null, IntPtr.Zero);
         }
 
-        public static bool InputText(
+        public  bool InputText(
             string label,
             IntPtr buf,
             uint buf_size,
@@ -445,7 +445,7 @@ namespace ImGuiNET
             return InputText(label, buf, buf_size, flags, null, IntPtr.Zero);
         }
 
-        public static bool InputText(
+        public  bool InputText(
             string label,
             IntPtr buf,
             uint buf_size,
@@ -455,7 +455,7 @@ namespace ImGuiNET
             return InputText(label, buf, buf_size, flags, callback, IntPtr.Zero);
         }
 
-        public static bool InputText(
+        public  bool InputText(
             string label,
             IntPtr buf,
             uint buf_size,
@@ -486,7 +486,7 @@ namespace ImGuiNET
             return ret;
         }
 
-        public static bool Begin(string name, ImGuiWindowFlags flags)
+        public  bool Begin(string name, ImGuiWindowFlags flags)
         {
             int utf8NameByteCount = Encoding.UTF8.GetByteCount(name);
             byte* utf8NameBytes;
@@ -512,7 +512,7 @@ namespace ImGuiNET
             return ret != 0;
         }
 
-        public static bool MenuItem(string label, bool enabled)
+        public  bool MenuItem(string label, bool enabled)
         {
             return MenuItem(label, string.Empty, false, enabled);
         }

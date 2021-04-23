@@ -21,6 +21,7 @@ namespace ImGuiNET
     public class MemoryEditor
     {
         bool AllowEdits;
+        private ImGui _imgui;
         int Rows;
         int DataEditingAddr;
         bool DataEditingTakeFocus;
@@ -33,6 +34,7 @@ namespace ImGuiNET
             DataEditingAddr = -1;
             DataEditingTakeFocus = false;
             AllowEdits = true;
+            _imgui = new ImGui();
         }
 
         private static string FixedHex(int v, int count)
@@ -57,10 +59,10 @@ namespace ImGuiNET
 
         public unsafe void Draw(string title, byte[] mem_data, int mem_size, int base_display_addr = 0)
         {
-            ImGui.SetNextWindowSize(new Vector2(500, 350), ImGuiCond.FirstUseEver);
-            if (!ImGui.Begin(title))
+            _imgui.SetNextWindowSize(new Vector2(500, 350), ImGuiCond.FirstUseEver);
+            if (!_imgui.Begin(title))
             {
-                ImGui.End();
+                _imgui.End();
                 return;
             }
 
@@ -68,16 +70,16 @@ namespace ImGuiNET
             int line_total_count = (mem_size + Rows - 1) / Rows;
 
             ImGuiNative.igSetNextWindowContentSize(new Vector2(0.0f, line_total_count * line_height));
-            ImGui.BeginChild("##scrolling", new Vector2(0, -ImGuiNative.igGetFrameHeightWithSpacing()), false, 0);
+            _imgui.BeginChild("##scrolling", new Vector2(0, -ImGuiNative.igGetFrameHeightWithSpacing()), false, 0);
 
-            ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(0, 0));
-            ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0, 0));
+            _imgui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(0, 0));
+            _imgui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(0, 0));
 
             int addr_digits_count = 0;
             for (int n = base_display_addr + mem_size - 1; n > 0; n >>= 4)
                 addr_digits_count++;
 
-            float glyph_width = ImGui.CalcTextSize("F").X;
+            float glyph_width = _imgui.CalcTextSize("F").X;
             float cell_width = glyph_width * 3; // "FF " we include trailing space in the width to easily catch clicks everywhere
 
             var clipper = new ImGuiListClipper2(line_total_count, line_height);
@@ -93,10 +95,10 @@ namespace ImGuiNET
 
             if (DataEditingAddr != -1)
             {
-                if (ImGui.IsKeyPressed(ImGui.GetKeyIndex(ImGuiKey.UpArrow)) && DataEditingAddr >= Rows) { DataEditingAddr -= Rows; DataEditingTakeFocus = true; }
-                else if (ImGui.IsKeyPressed(ImGui.GetKeyIndex(ImGuiKey.DownArrow)) && DataEditingAddr < mem_size - Rows) { DataEditingAddr += Rows; DataEditingTakeFocus = true; }
-                else if (ImGui.IsKeyPressed(ImGui.GetKeyIndex(ImGuiKey.LeftArrow)) && DataEditingAddr > 0) { DataEditingAddr -= 1; DataEditingTakeFocus = true; }
-                else if (ImGui.IsKeyPressed(ImGui.GetKeyIndex(ImGuiKey.RightArrow)) && DataEditingAddr < mem_size - 1) { DataEditingAddr += 1; DataEditingTakeFocus = true; }
+                if (_imgui.IsKeyPressed(_imgui.GetKeyIndex(ImGuiKey.UpArrow)) && DataEditingAddr >= Rows) { DataEditingAddr -= Rows; DataEditingTakeFocus = true; }
+                else if (_imgui.IsKeyPressed(_imgui.GetKeyIndex(ImGuiKey.DownArrow)) && DataEditingAddr < mem_size - Rows) { DataEditingAddr += Rows; DataEditingTakeFocus = true; }
+                else if (_imgui.IsKeyPressed(_imgui.GetKeyIndex(ImGuiKey.LeftArrow)) && DataEditingAddr > 0) { DataEditingAddr -= 1; DataEditingTakeFocus = true; }
+                else if (_imgui.IsKeyPressed(_imgui.GetKeyIndex(ImGuiKey.RightArrow)) && DataEditingAddr < mem_size - 1) { DataEditingAddr += 1; DataEditingTakeFocus = true; }
             }
             if ((DataEditingAddr / Rows) != (data_editing_addr_backup / Rows))
             {
@@ -110,19 +112,19 @@ namespace ImGuiNET
             for (int line_i = clipper.DisplayStart; line_i < clipper.DisplayEnd; line_i++) // display only visible items
             {
                 int addr = line_i * Rows;
-                ImGui.Text(FixedHex(base_display_addr + addr, addr_digits_count) + ": ");
-                ImGui.SameLine();
+                _imgui.Text(FixedHex(base_display_addr + addr, addr_digits_count) + ": ");
+                _imgui.SameLine();
 
                 // Draw Hexadecimal
                 float line_start_x = ImGuiNative.igGetCursorPosX();
                 for (int n = 0; n < Rows && addr < mem_size; n++, addr++)
                 {
-                    ImGui.SameLine(line_start_x + cell_width * n);
+                    _imgui.SameLine(line_start_x + cell_width * n);
 
                     if (DataEditingAddr == addr)
                     {
                         // Display text input on current byte
-                        ImGui.PushID(addr);
+                        _imgui.PushID(addr);
 
                         // FIXME: We should have a way to retrieve the text edit cursor position more easily in the API, this is rather tedious.
                         ImGuiInputTextCallback callback = (data) =>
@@ -137,21 +139,21 @@ namespace ImGuiNET
                         bool data_write = false;
                         if (DataEditingTakeFocus)
                         {
-                            ImGui.SetKeyboardFocusHere();
+                            _imgui.SetKeyboardFocusHere();
                             ReplaceChars(DataInput, FixedHex(mem_data[addr], 2));
                             ReplaceChars(AddrInput, FixedHex(base_display_addr + addr, addr_digits_count));
                         }
-                        ImGui.PushItemWidth(ImGui.CalcTextSize("FF").X);
+                        _imgui.PushItemWidth(_imgui.CalcTextSize("FF").X);
 
                         var flags = ImGuiInputTextFlags.CharsHexadecimal | ImGuiInputTextFlags.EnterReturnsTrue | ImGuiInputTextFlags.AutoSelectAll | ImGuiInputTextFlags.NoHorizontalScroll | ImGuiInputTextFlags.CallbackAlways;
 
-                        if (ImGui.InputText("##data", DataInput, 32, flags, callback, (IntPtr)(&cursor_pos)))
+                        if (_imgui.InputText("##data", DataInput, 32, flags, callback, (IntPtr)(&cursor_pos)))
                             data_write = data_next = true;
-                        else if (!DataEditingTakeFocus && !ImGui.IsItemActive())
+                        else if (!DataEditingTakeFocus && !_imgui.IsItemActive())
                             DataEditingAddr = -1;
 
                         DataEditingTakeFocus = false;
-                        ImGui.PopItemWidth();
+                        _imgui.PopItemWidth();
                         if (cursor_pos >= 2)
                             data_write = data_next = true;
                         if (data_write)
@@ -160,12 +162,12 @@ namespace ImGuiNET
                             if (TryHexParse(DataInput, out data))
                                 mem_data[addr] = (byte)data;
                         }
-                        ImGui.PopID();
+                        _imgui.PopID();
                     }
                     else
                     {
-                        ImGui.Text(FixedHex(mem_data[addr], 2));
-                        if (AllowEdits && ImGui.IsItemHovered() && ImGui.IsMouseClicked(0))
+                        _imgui.Text(FixedHex(mem_data[addr], 2));
+                        if (AllowEdits && _imgui.IsItemHovered() && _imgui.IsMouseClicked(0))
                         {
                             DataEditingTakeFocus = true;
                             DataEditingAddr = addr;
@@ -173,7 +175,7 @@ namespace ImGuiNET
                     }
                 }
 
-                ImGui.SameLine(line_start_x + cell_width * Rows + glyph_width * 2);
+                _imgui.SameLine(line_start_x + cell_width * Rows + glyph_width * 2);
                 //separator line drawing replaced by printing a pipe char
 
                 // Draw ASCII values
@@ -185,12 +187,12 @@ namespace ImGuiNET
                     int c = mem_data[addr];
                     asciiVal.Append((c >= 32 && c < 128) ? Convert.ToChar(c) : '.');
                 }
-                ImGui.TextUnformatted(asciiVal.ToString());  //use unformatted, so string can contain the '%' character
+                _imgui.TextUnformatted(asciiVal.ToString());  //use unformatted, so string can contain the '%' character
             }
             //clipper.End();  //not implemented
-            ImGui.PopStyleVar(2);
+            _imgui.PopStyleVar(2);
 
-            ImGui.EndChild();
+            _imgui.EndChild();
 
             if (data_next && DataEditingAddr < mem_size)
             {
@@ -198,27 +200,27 @@ namespace ImGuiNET
                 DataEditingTakeFocus = true;
             }
 
-            ImGui.Separator();
+            _imgui.Separator();
 
             ImGuiNative.igAlignTextToFramePadding();
-            ImGui.PushItemWidth(50);
-            ImGui.PushAllowKeyboardFocus(true);
+            _imgui.PushItemWidth(50);
+            _imgui.PushAllowKeyboardFocus(true);
             int rows_backup = Rows;
-            if (ImGui.DragInt("##rows", ref Rows, 0.2f, 4, 32, "%.0f rows"))
+            if (_imgui.DragInt("##rows", ref Rows, 0.2f, 4, 32, "%.0f rows"))
             {
                 if (Rows <= 0) Rows = 4;
-                Vector2 new_window_size = ImGui.GetWindowSize();
+                Vector2 new_window_size = _imgui.GetWindowSize();
                 new_window_size.X += (Rows - rows_backup) * (cell_width + glyph_width);
-                ImGui.SetWindowSize(new_window_size);
+                _imgui.SetWindowSize(new_window_size);
             }
-            ImGui.PopAllowKeyboardFocus();
-            ImGui.PopItemWidth();
-            ImGui.SameLine();
-            ImGui.Text(string.Format(" Range {0}..{1} ", FixedHex(base_display_addr, addr_digits_count),
+            _imgui.PopAllowKeyboardFocus();
+            _imgui.PopItemWidth();
+            _imgui.SameLine();
+            _imgui.Text(string.Format(" Range {0}..{1} ", FixedHex(base_display_addr, addr_digits_count),
                 FixedHex(base_display_addr + mem_size - 1, addr_digits_count)));
-            ImGui.SameLine();
-            ImGui.PushItemWidth(70);
-            if (ImGui.InputText("##addr", AddrInput, 32, ImGuiInputTextFlags.CharsHexadecimal | ImGuiInputTextFlags.EnterReturnsTrue, null))
+            _imgui.SameLine();
+            _imgui.PushItemWidth(70);
+            if (_imgui.InputText("##addr", AddrInput, 32, ImGuiInputTextFlags.CharsHexadecimal | ImGuiInputTextFlags.EnterReturnsTrue, null))
             {
                 int goto_addr;
                 if (TryHexParse(AddrInput, out goto_addr))
@@ -226,17 +228,17 @@ namespace ImGuiNET
                     goto_addr -= base_display_addr;
                     if (goto_addr >= 0 && goto_addr < mem_size)
                     {
-                        ImGui.BeginChild("##scrolling");
-                        ImGui.SetScrollFromPosY(ImGui.GetCursorStartPos().Y + (goto_addr / Rows) * ImGuiNative.igGetTextLineHeight());
-                        ImGui.EndChild();
+                        _imgui.BeginChild("##scrolling");
+                        _imgui.SetScrollFromPosY(_imgui.GetCursorStartPos().Y + (goto_addr / Rows) * ImGuiNative.igGetTextLineHeight());
+                        _imgui.EndChild();
                         DataEditingAddr = goto_addr;
                         DataEditingTakeFocus = true;
                     }
                 }
             }
-            ImGui.PopItemWidth();
+            _imgui.PopItemWidth();
 
-            ImGui.End();
+            _imgui.End();
         }
     }
 

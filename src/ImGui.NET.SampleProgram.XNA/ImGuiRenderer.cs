@@ -38,11 +38,13 @@ namespace ImGuiNET.SampleProgram.XNA
         private int _scrollWheelValue;
 
         private List<int> _keys = new List<int>();
+        private ImGui _imgui;
 
         public ImGuiRenderer(Game game)
         {
-            var context = ImGui.CreateContext();
-            ImGui.SetCurrentContext(context);
+            _imgui = new ImGui();
+            var context = _imgui.CreateContext();
+            _imgui.SetCurrentContext(context);
 
             _game = game ?? throw new ArgumentNullException(nameof(game));
             _graphicsDevice = game.GraphicsDevice;
@@ -65,12 +67,12 @@ namespace ImGuiNET.SampleProgram.XNA
         #region ImGuiRenderer
 
         /// <summary>
-        /// Creates a texture and loads the font data from ImGui. Should be called when the <see cref="GraphicsDevice" /> is initialized but before any rendering is done
+        /// Creates a texture and loads the font data from _imgui. Should be called when the <see cref="GraphicsDevice" /> is initialized but before any rendering is done
         /// </summary>
         public virtual unsafe void RebuildFontAtlas()
         {
             // Get font texture from ImGui
-            var io = ImGui.GetIO();
+            var io = _imgui.GetIO();
             io.Fonts.GetTexDataAsRGBA32(out byte* pixelData, out int width, out int height, out int bytesPerPixel);
 
             // Copy the data to a managed array
@@ -93,7 +95,7 @@ namespace ImGuiNET.SampleProgram.XNA
         }
 
         /// <summary>
-        /// Creates a pointer to a texture, which can be passed through ImGui calls such as <see cref="ImGui.Image" />. That pointer is then used by ImGui to let us know what texture to draw
+        /// Creates a pointer to a texture, which can be passed through ImGui calls such as <see cref="_imgui.Image" />. That pointer is then used by ImGui to let us know what texture to draw
         /// </summary>
         public virtual IntPtr BindTexture(Texture2D texture)
         {
@@ -117,21 +119,21 @@ namespace ImGuiNET.SampleProgram.XNA
         /// </summary>
         public virtual void BeforeLayout(GameTime gameTime)
         {
-            ImGui.GetIO().DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            _imgui.GetIO().DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             UpdateInput();
 
-            ImGui.NewFrame();
+            _imgui.NewFrame();
         }
 
         /// <summary>
-        /// Asks ImGui for the generated geometry data and sends it to the graphics pipeline, should be called after the UI is drawn using ImGui.** calls
+        /// Asks ImGui for the generated geometry data and sends it to the graphics pipeline, should be called after the UI is drawn using _imgui.** calls
         /// </summary>
         public virtual void AfterLayout()
         {
-            ImGui.Render();
+            _imgui.Render();
 
-            unsafe { RenderDrawData(ImGui.GetDrawData()); }
+            unsafe { RenderDrawData(_imgui.GetDrawData()); }
         }
 
         #endregion ImGuiRenderer
@@ -143,7 +145,7 @@ namespace ImGuiNET.SampleProgram.XNA
         /// </summary>
         protected virtual void SetupInput()
         {
-            var io = ImGui.GetIO();
+            var io = _imgui.GetIO();
 
             _keys.Add(io.KeyMap[(int)ImGuiKey.Tab] = (int)Keys.Tab);
             _keys.Add(io.KeyMap[(int)ImGuiKey.LeftArrow] = (int)Keys.Left);
@@ -180,11 +182,11 @@ namespace ImGuiNET.SampleProgram.XNA
             //{
             //    if (c == '\t') return;
 
-            //    ImGui.GetIO().AddInputCharacter(c);
+            //    _imgui.GetIO().AddInputCharacter(c);
             //};
             ///////////////////////////////////////////
 
-            ImGui.GetIO().Fonts.AddFontDefault();
+            _imgui.GetIO().Fonts.AddFontDefault();
         }
 
         /// <summary>
@@ -194,7 +196,7 @@ namespace ImGuiNET.SampleProgram.XNA
         {
             _effect = _effect ?? new BasicEffect(_graphicsDevice);
 
-            var io = ImGui.GetIO();
+            var io = _imgui.GetIO();
 
             _effect.World = Matrix.Identity;
             _effect.View = Matrix.Identity;
@@ -211,7 +213,7 @@ namespace ImGuiNET.SampleProgram.XNA
         /// </summary>
         protected virtual void UpdateInput()
         {
-            var io = ImGui.GetIO();
+            var io = _imgui.GetIO();
 
             var mouse = Mouse.GetState();
             var keyboard = Keyboard.GetState();
@@ -259,7 +261,7 @@ namespace ImGuiNET.SampleProgram.XNA
             _graphicsDevice.DepthStencilState = DepthStencilState.DepthRead;
 
             // Handle cases of screen coordinates != from framebuffer coordinates (e.g. retina displays)
-            drawData.ScaleClipRects(ImGui.GetIO().DisplayFramebufferScale);
+            drawData.ScaleClipRects(_imgui.GetIO().DisplayFramebufferScale);
 
             // Setup projection
             _graphicsDevice.Viewport = new Viewport(0, 0, _graphicsDevice.PresentationParameters.BackBufferWidth, _graphicsDevice.PresentationParameters.BackBufferHeight);

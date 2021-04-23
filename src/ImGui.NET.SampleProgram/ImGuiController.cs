@@ -39,6 +39,7 @@ namespace ImGuiNET
 
         private int _windowWidth;
         private int _windowHeight;
+        private static ImGui _imgui;
         private Vector2 _scaleFactor = Vector2.One;
 
         // Image trackers
@@ -58,18 +59,19 @@ namespace ImGuiNET
             _gd = gd;
             _windowWidth = width;
             _windowHeight = height;
+            _imgui = new ImGui();
 
-            IntPtr context = ImGui.CreateContext();
-            ImGui.SetCurrentContext(context);
-            var fonts = ImGui.GetIO().Fonts;
-            ImGui.GetIO().Fonts.AddFontDefault();
+            IntPtr context = _imgui.CreateContext();
+            _imgui.SetCurrentContext(context);
+            var fonts = _imgui.GetIO().Fonts;
+            _imgui.GetIO().Fonts.AddFontDefault();
 
             CreateDeviceResources(gd, outputDescription);
             SetKeyMappings();
 
             SetPerFrameImGuiData(1f / 60f);
 
-            ImGui.NewFrame();
+            _imgui.NewFrame();
             _frameBegun = true;
         }
 
@@ -247,7 +249,7 @@ namespace ImGuiNET
         /// </summary>
         public void RecreateFontDeviceTexture(GraphicsDevice gd)
         {
-            ImGuiIOPtr io = ImGui.GetIO();
+            ImGuiIOPtr io = _imgui.GetIO();
             // Build
             IntPtr pixels;
             int width, height, bytesPerPixel;
@@ -291,8 +293,8 @@ namespace ImGuiNET
             if (_frameBegun)
             {
                 _frameBegun = false;
-                ImGui.Render();
-                RenderImDrawData(ImGui.GetDrawData(), gd, cl);
+                _imgui.Render();
+                RenderImDrawData(_imgui.GetDrawData(), gd, cl);
             }
         }
 
@@ -303,14 +305,14 @@ namespace ImGuiNET
         {
             if (_frameBegun)
             {
-                ImGui.Render();
+                _imgui.Render();
             }
 
             SetPerFrameImGuiData(deltaSeconds);
             UpdateImGuiInput(snapshot);
 
             _frameBegun = true;
-            ImGui.NewFrame();
+            _imgui.NewFrame();
         }
 
         /// <summary>
@@ -319,7 +321,7 @@ namespace ImGuiNET
         /// </summary>
         private void SetPerFrameImGuiData(float deltaSeconds)
         {
-            ImGuiIOPtr io = ImGui.GetIO();
+            ImGuiIOPtr io = _imgui.GetIO();
             io.DisplaySize = new Vector2(
                 _windowWidth / _scaleFactor.X,
                 _windowHeight / _scaleFactor.Y);
@@ -329,7 +331,7 @@ namespace ImGuiNET
 
         private void UpdateImGuiInput(InputSnapshot snapshot)
         {
-            ImGuiIOPtr io = ImGui.GetIO();
+            ImGuiIOPtr io = _imgui.GetIO();
 
             Vector2 mousePosition = snapshot.MousePosition;
 
@@ -400,7 +402,7 @@ namespace ImGuiNET
 
         private static void SetKeyMappings()
         {
-            ImGuiIOPtr io = ImGui.GetIO();
+            ImGuiIOPtr io = _imgui.GetIO();
             io.KeyMap[(int)ImGuiKey.Tab] = (int)Key.Tab;
             io.KeyMap[(int)ImGuiKey.LeftArrow] = (int)Key.Left;
             io.KeyMap[(int)ImGuiKey.RightArrow] = (int)Key.Right;
@@ -468,7 +470,7 @@ namespace ImGuiNET
             }
 
             // Setup orthographic projection matrix into our constant buffer
-            ImGuiIOPtr io = ImGui.GetIO();
+            ImGuiIOPtr io = _imgui.GetIO();
             Matrix4x4 mvp = Matrix4x4.CreateOrthographicOffCenter(
                 0f,
                 io.DisplaySize.X,
