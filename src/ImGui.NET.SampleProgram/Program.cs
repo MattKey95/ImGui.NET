@@ -199,7 +199,7 @@ namespace ImGuiNET
 
             if (_showMemoryEditor)
             {
-                ImGui.Text("Memory editor currently supported.");
+                _imgui.Text("Memory editor currently supported.");
                 // _memoryEditor.Draw("Memory Editor", _memoryEditorData, _memoryEditorData.Length);
             }
         }

@@ -14575,7 +14575,7 @@ namespace ImGuiNET
             return ret != 0;
         }
     }
-    public unsafe interface IImGui
+    public unsafe partial interface IImGui
     {
         ImGuiPayloadPtr AcceptDragDropPayload(string type);
         ImGuiPayloadPtr AcceptDragDropPayload(string type, ImGuiDragDropFlags flags);

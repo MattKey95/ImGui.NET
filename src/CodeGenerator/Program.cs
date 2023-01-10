@@ -411,7 +411,7 @@ namespace CodeGenerator
                 writer.PopBlock();
 
                 //Write interface
-                writer.PushBlock($"public unsafe interface I{classPrefix}");
+                writer.PushBlock($"public unsafe partial interface I{classPrefix}");
 
                 foreach (var function in functions)
                     writer.WriteLine(function);
