@@ -15,16 +15,6 @@ namespace CodeGenerator
     {
         static void Main(string[] args)
         {
-            string outputPath;
-            if (args.Length > 0)
-            {
-                outputPath = args[0];
-            }
-            else
-            {
-                outputPath = AppContext.BaseDirectory;
-            }
-
             string libraryName;
             if (args.Length > 1)
             {
@@ -34,6 +24,22 @@ namespace CodeGenerator
             {
                 libraryName = "cimgui";
             }
+
+            string outputPath;
+            if (args.Length > 0)
+            {
+                outputPath = args[0];
+            }
+            else
+            {
+                outputPath = AppContext.BaseDirectory + libraryName + "\\";
+            }
+
+            if (!Directory.Exists(outputPath))
+            {
+                Directory.CreateDirectory(outputPath);
+            }
+
 
             string projectNamespace = libraryName switch
             {
@@ -79,14 +85,14 @@ namespace CodeGenerator
 
             foreach (EnumDefinition ed in defs.Enums)
             {
-                using (CSharpCodeWriter writer = new CSharpCodeWriter(Path.Combine(outputPath, ed.FriendlyName + ".gen.cs")))
+                using (CSharpCodeWriter writer = new CSharpCodeWriter(Path.Combine(outputPath, ed.FriendlyNames[0] + ".gen.cs")))
                 {
                     writer.PushBlock($"namespace {projectNamespace}");
-                    if (ed.FriendlyName.Contains("Flags"))
+                    if (ed.FriendlyNames[0].Contains("Flags"))
                     {
                         writer.WriteLine("[System.Flags]");
                     }
-                    writer.PushBlock($"public enum {ed.FriendlyName}");
+                    writer.PushBlock($"public enum {ed.FriendlyNames[0]}");
                     foreach (EnumMember member in ed.Members)
                     {
                         string sanitizedName = ed.SanitizeNames(member.Name);
