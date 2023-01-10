@@ -437,17 +437,17 @@ namespace ImGuiNET
             }
             return ret != 0;
         }
-        public static void BeginDisabled()
+        public void BeginDisabled()
         {
             byte disabled = 1;
             ImGuiNative.igBeginDisabled(disabled);
         }
-        public static void BeginDisabled(bool disabled)
+        public void BeginDisabled(bool disabled)
         {
             byte native_disabled = disabled ? (byte)1 : (byte)0;
             ImGuiNative.igBeginDisabled(native_disabled);
         }
-        public static bool BeginDragDropSource()
+        public bool BeginDragDropSource()
         {
             ImGuiDragDropFlags flags = (ImGuiDragDropFlags)0;
             byte ret = ImGuiNative.igBeginDragDropSource(flags);
@@ -1272,7 +1272,7 @@ namespace ImGuiNET
             float ret = ImGuiNative.igCalcItemWidth();
             return ret;
         }
-        public static bool Checkbox(string label, ref bool v)
+        public bool Checkbox(string label, ref bool v)
         {
             byte* native_label;
             int label_byteCount = 0;
@@ -2208,7 +2208,7 @@ namespace ImGuiNET
             }
             return ret != 0;
         }
-        public static void DebugTextEncoding(string text)
+        public void DebugTextEncoding(string text)
         {
             byte* native_text;
             int text_byteCount = 0;
@@ -2234,7 +2234,7 @@ namespace ImGuiNET
                 Util.Free(native_text);
             }
         }
-        public static void DestroyContext()
+        public void DestroyContext()
         {
             IntPtr ctx = IntPtr.Zero;
             ImGuiNative.igDestroyContext(ctx);
@@ -2247,7 +2247,7 @@ namespace ImGuiNET
         {
             ImGuiNative.igDestroyPlatformWindows();
         }
-        public static uint DockSpace(uint id)
+        public uint DockSpace(uint id)
         {
             Vector2 size = new Vector2();
             ImGuiDockNodeFlags flags = (ImGuiDockNodeFlags)0;
@@ -2255,20 +2255,20 @@ namespace ImGuiNET
             uint ret = ImGuiNative.igDockSpace(id, size, flags, window_class);
             return ret;
         }
-        public static uint DockSpace(uint id, Vector2 size)
+        public uint DockSpace(uint id, Vector2 size)
         {
             ImGuiDockNodeFlags flags = (ImGuiDockNodeFlags)0;
             ImGuiWindowClass* window_class = null;
             uint ret = ImGuiNative.igDockSpace(id, size, flags, window_class);
             return ret;
         }
-        public static uint DockSpace(uint id, Vector2 size, ImGuiDockNodeFlags flags)
+        public uint DockSpace(uint id, Vector2 size, ImGuiDockNodeFlags flags)
         {
             ImGuiWindowClass* window_class = null;
             uint ret = ImGuiNative.igDockSpace(id, size, flags, window_class);
             return ret;
         }
-        public static uint DockSpace(uint id, Vector2 size, ImGuiDockNodeFlags flags, ImGuiWindowClassPtr window_class)
+        public uint DockSpace(uint id, Vector2 size, ImGuiDockNodeFlags flags, ImGuiWindowClassPtr window_class)
         {
             ImGuiWindowClass* native_window_class = window_class.NativePtr;
             uint ret = ImGuiNative.igDockSpace(id, size, flags, native_window_class);
@@ -5620,7 +5620,7 @@ namespace ImGuiNET
                 }
             }
         }
-        public static bool DragScalar(string label, ImGuiDataType data_type, IntPtr p_data)
+        public bool DragScalar(string label, ImGuiDataType data_type, IntPtr p_data)
         {
             byte* native_label;
             int label_byteCount = 0;
@@ -5653,7 +5653,7 @@ namespace ImGuiNET
             }
             return ret != 0;
         }
-        public static bool DragScalar(string label, ImGuiDataType data_type, IntPtr p_data, float v_speed)
+        public bool DragScalar(string label, ImGuiDataType data_type, IntPtr p_data, float v_speed)
         {
             byte* native_label;
             int label_byteCount = 0;
@@ -5854,7 +5854,7 @@ namespace ImGuiNET
             }
             return ret != 0;
         }
-        public static bool DragScalarN(string label, ImGuiDataType data_type, IntPtr p_data, int components)
+        public bool DragScalarN(string label, ImGuiDataType data_type, IntPtr p_data, int components)
         {
             byte* native_label;
             int label_byteCount = 0;
@@ -5887,7 +5887,7 @@ namespace ImGuiNET
             }
             return ret != 0;
         }
-        public static bool DragScalarN(string label, ImGuiDataType data_type, IntPtr p_data, int components, float v_speed)
+        public bool DragScalarN(string label, ImGuiDataType data_type, IntPtr p_data, int components, float v_speed)
         {
             byte* native_label;
             int label_byteCount = 0;
@@ -6108,11 +6108,11 @@ namespace ImGuiNET
         {
             ImGuiNative.igEndCombo();
         }
-        public static void EndDisabled()
+        public void EndDisabled()
         {
             ImGuiNative.igEndDisabled();
         }
-        public static void EndDragDropSource()
+        public void EndDragDropSource()
         {
             ImGuiNative.igEndDragDropSource();
         }
@@ -6415,17 +6415,17 @@ namespace ImGuiNET
             ImGuiNative.igGetItemRectSize(&__retval);
             return __retval;
         }
-        public static ImGuiKey GetKeyIndex(ImGuiKey key)
+        public ImGuiKey GetKeyIndex(ImGuiKey key)
         {
             ImGuiKey ret = ImGuiNative.igGetKeyIndex(key);
             return ret;
         }
-        public static string GetKeyName(ImGuiKey key)
+        public string GetKeyName(ImGuiKey key)
         {
             byte* ret = ImGuiNative.igGetKeyName(key);
             return Util.StringFromPtr(ret);
         }
-        public static int GetKeyPressedAmount(ImGuiKey key, float repeat_delay, float rate)
+        public int GetKeyPressedAmount(ImGuiKey key, float repeat_delay, float rate)
         {
             int ret = ImGuiNative.igGetKeyPressedAmount(key, repeat_delay, rate);
             return ret;
@@ -6435,12 +6435,12 @@ namespace ImGuiNET
             ImGuiViewport* ret = ImGuiNative.igGetMainViewport();
             return new ImGuiViewportPtr(ret);
         }
-        public static int GetMouseClickedCount(ImGuiMouseButton button)
+        public int GetMouseClickedCount(ImGuiMouseButton button)
         {
             int ret = ImGuiNative.igGetMouseClickedCount(button);
             return ret;
         }
-        public static ImGuiMouseCursor GetMouseCursor()
+        public ImGuiMouseCursor GetMouseCursor()
         {
             ImGuiMouseCursor ret = ImGuiNative.igGetMouseCursor();
             return ret;
@@ -6560,7 +6560,7 @@ namespace ImGuiNET
             ImGuiNative.igGetWindowContentRegionMin(&__retval);
             return __retval;
         }
-        public static uint GetWindowDockID()
+        public uint GetWindowDockID()
         {
             uint ret = ImGuiNative.igGetWindowDockID();
             return ret;
@@ -6632,7 +6632,7 @@ namespace ImGuiNET
         {
             ImGuiNative.igImage(user_texture_id, size, uv0, uv1, tint_col, border_col);
         }
-        public static bool ImageButton(string str_id, IntPtr user_texture_id, Vector2 size)
+        public bool ImageButton(string str_id, IntPtr user_texture_id, Vector2 size)
         {
             byte* native_str_id;
             int str_id_byteCount = 0;
@@ -6663,7 +6663,7 @@ namespace ImGuiNET
             }
             return ret != 0;
         }
-        public static bool ImageButton(string str_id, IntPtr user_texture_id, Vector2 size, Vector2 uv0)
+        public bool ImageButton(string str_id, IntPtr user_texture_id, Vector2 size, Vector2 uv0)
         {
             byte* native_str_id;
             int str_id_byteCount = 0;
@@ -6693,7 +6693,7 @@ namespace ImGuiNET
             }
             return ret != 0;
         }
-        public static bool ImageButton(string str_id, IntPtr user_texture_id, Vector2 size, Vector2 uv0, Vector2 uv1)
+        public bool ImageButton(string str_id, IntPtr user_texture_id, Vector2 size, Vector2 uv0, Vector2 uv1)
         {
             byte* native_str_id;
             int str_id_byteCount = 0;
@@ -6722,7 +6722,7 @@ namespace ImGuiNET
             }
             return ret != 0;
         }
-        public static bool ImageButton(string str_id, IntPtr user_texture_id, Vector2 size, Vector2 uv0, Vector2 uv1, Vector4 bg_col)
+        public bool ImageButton(string str_id, IntPtr user_texture_id, Vector2 size, Vector2 uv0, Vector2 uv1, Vector4 bg_col)
         {
             byte* native_str_id;
             int str_id_byteCount = 0;
@@ -6750,7 +6750,7 @@ namespace ImGuiNET
             }
             return ret != 0;
         }
-        public static bool ImageButton(string str_id, IntPtr user_texture_id, Vector2 size, Vector2 uv0, Vector2 uv1, Vector4 bg_col, Vector4 tint_col)
+        public bool ImageButton(string str_id, IntPtr user_texture_id, Vector2 size, Vector2 uv0, Vector2 uv1, Vector4 bg_col, Vector4 tint_col)
         {
             byte* native_str_id;
             int str_id_byteCount = 0;
@@ -8606,24 +8606,24 @@ namespace ImGuiNET
             byte ret = ImGuiNative.igIsItemVisible();
             return ret != 0;
         }
-        public static bool IsKeyDown(ImGuiKey key)
+        public bool IsKeyDown(ImGuiKey key)
         {
             byte ret = ImGuiNative.igIsKeyDown_Nil(key);
             return ret != 0;
         }
-        public static bool IsKeyPressed(ImGuiKey key)
+        public bool IsKeyPressed(ImGuiKey key)
         {
             byte repeat = 1;
             byte ret = ImGuiNative.igIsKeyPressed_Bool(key, repeat);
             return ret != 0;
         }
-        public static bool IsKeyPressed(ImGuiKey key, bool repeat)
+        public bool IsKeyPressed(ImGuiKey key, bool repeat)
         {
             byte native_repeat = repeat ? (byte)1 : (byte)0;
             byte ret = ImGuiNative.igIsKeyPressed_Bool(key, native_repeat);
             return ret != 0;
         }
-        public static bool IsKeyReleased(ImGuiKey key)
+        public bool IsKeyReleased(ImGuiKey key)
         {
             byte ret = ImGuiNative.igIsKeyReleased_Nil(key);
             return ret != 0;
@@ -9489,16 +9489,16 @@ namespace ImGuiNET
                 Util.Free(native_str_id);
             }
         }
-        public static void OpenPopup(uint id)
+        public void OpenPopup(uint id)
         {
             ImGuiPopupFlags popup_flags = (ImGuiPopupFlags)0;
             ImGuiNative.igOpenPopup_ID(id, popup_flags);
         }
-        public static void OpenPopup(uint id, ImGuiPopupFlags popup_flags)
+        public void OpenPopup(uint id, ImGuiPopupFlags popup_flags)
         {
             ImGuiNative.igOpenPopup_ID(id, popup_flags);
         }
-        public static void OpenPopupOnItemClick()
+        public void OpenPopupOnItemClick()
         {
             byte* native_str_id = null;
             ImGuiPopupFlags popup_flags = (ImGuiPopupFlags)1;
@@ -10896,17 +10896,17 @@ namespace ImGuiNET
         {
             ImGuiNative.igSetMouseCursor(cursor_type);
         }
-        public static void SetNextFrameWantCaptureKeyboard(bool want_capture_keyboard)
+        public void SetNextFrameWantCaptureKeyboard(bool want_capture_keyboard)
         {
             byte native_want_capture_keyboard = want_capture_keyboard ? (byte)1 : (byte)0;
             ImGuiNative.igSetNextFrameWantCaptureKeyboard(native_want_capture_keyboard);
         }
-        public static void SetNextFrameWantCaptureMouse(bool want_capture_mouse)
+        public void SetNextFrameWantCaptureMouse(bool want_capture_mouse)
         {
             byte native_want_capture_mouse = want_capture_mouse ? (byte)1 : (byte)0;
             ImGuiNative.igSetNextFrameWantCaptureMouse(native_want_capture_mouse);
         }
-        public static void SetNextItemOpen(bool is_open)
+        public void SetNextItemOpen(bool is_open)
         {
             byte native_is_open = is_open ? (byte)1 : (byte)0;
             ImGuiCond cond = (ImGuiCond)0;
@@ -10973,11 +10973,11 @@ namespace ImGuiNET
         {
             ImGuiNative.igSetNextWindowPos(pos, cond, pivot);
         }
-        public static void SetNextWindowScroll(Vector2 scroll)
+        public void SetNextWindowScroll(Vector2 scroll)
         {
             ImGuiNative.igSetNextWindowScroll(scroll);
         }
-        public static void SetNextWindowSize(Vector2 size)
+        public void SetNextWindowSize(Vector2 size)
         {
             ImGuiCond cond = (ImGuiCond)0;
             ImGuiNative.igSetNextWindowSize(size, cond);
@@ -11343,19 +11343,19 @@ namespace ImGuiNET
             ImGuiNative.igShowAboutWindow(native_p_open);
             p_open = native_p_open_val != 0;
         }
-        public static void ShowDebugLogWindow()
+        public void ShowDebugLogWindow()
         {
             byte* p_open = null;
             ImGuiNative.igShowDebugLogWindow(p_open);
         }
-        public static void ShowDebugLogWindow(ref bool p_open)
+        public void ShowDebugLogWindow(ref bool p_open)
         {
             byte native_p_open_val = p_open ? (byte)1 : (byte)0;
             byte* native_p_open = &native_p_open_val;
             ImGuiNative.igShowDebugLogWindow(native_p_open);
             p_open = native_p_open_val != 0;
         }
-        public static void ShowDemoWindow()
+        public void ShowDemoWindow()
         {
             byte* p_open = null;
             ImGuiNative.igShowDemoWindow(p_open);
@@ -11405,19 +11405,19 @@ namespace ImGuiNET
             ImGuiNative.igShowMetricsWindow(native_p_open);
             p_open = native_p_open_val != 0;
         }
-        public static void ShowStackToolWindow()
+        public void ShowStackToolWindow()
         {
             byte* p_open = null;
             ImGuiNative.igShowStackToolWindow(p_open);
         }
-        public static void ShowStackToolWindow(ref bool p_open)
+        public void ShowStackToolWindow(ref bool p_open)
         {
             byte native_p_open_val = p_open ? (byte)1 : (byte)0;
             byte* native_p_open = &native_p_open_val;
             ImGuiNative.igShowStackToolWindow(native_p_open);
             p_open = native_p_open_val != 0;
         }
-        public static void ShowStyleEditor()
+        public void ShowStyleEditor()
         {
             ImGuiStyle* @ref = null;
             ImGuiNative.igShowStyleEditor(@ref);
@@ -13436,12 +13436,12 @@ namespace ImGuiNET
         {
             ImGuiNative.igTableSetBgColor(target, color, column_n);
         }
-        public static void TableSetColumnEnabled(int column_n, bool v)
+        public void TableSetColumnEnabled(int column_n, bool v)
         {
             byte native_v = v ? (byte)1 : (byte)0;
             ImGuiNative.igTableSetColumnEnabled(column_n, native_v);
         }
-        public static bool TableSetColumnIndex(int column_n)
+        public bool TableSetColumnIndex(int column_n)
         {
             byte ret = ImGuiNative.igTableSetColumnIndex(column_n);
             return ret != 0;
@@ -13957,7 +13957,7 @@ namespace ImGuiNET
                 Util.Free(native_str_id);
             }
         }
-        public static void TreePush(IntPtr ptr_id)
+        public void TreePush(IntPtr ptr_id)
         {
             void* native_ptr_id = (void*)ptr_id.ToPointer();
             ImGuiNative.igTreePush_Ptr(native_ptr_id);
@@ -14596,6 +14596,8 @@ namespace ImGuiNET
         bool BeginChildFrame(uint id, Vector2 size, ImGuiWindowFlags flags);
         bool BeginCombo(string label, string preview_value);
         bool BeginCombo(string label, string preview_value, ImGuiComboFlags flags);
+        void BeginDisabled();
+        void BeginDisabled(bool disabled);
         bool BeginDragDropSource();
         bool BeginDragDropSource(ImGuiDragDropFlags flags);
         bool BeginDragDropTarget();
@@ -14635,10 +14637,6 @@ namespace ImGuiNET
         bool Button(string label);
         bool Button(string label, Vector2 size);
         float CalcItemWidth();
-        void CaptureKeyboardFromApp();
-        void CaptureKeyboardFromApp(bool want_capture_keyboard_value);
-        void CaptureMouseFromApp();
-        void CaptureMouseFromApp(bool want_capture_mouse_value);
         bool Checkbox(string label, ref bool v);
         bool CheckboxFlags(string label, ref int flags, int flags_value);
         bool CheckboxFlags(string label, ref uint flags, uint flags_value);
@@ -14674,13 +14672,14 @@ namespace ImGuiNET
         IntPtr CreateContext();
         IntPtr CreateContext(ImFontAtlasPtr shared_font_atlas);
         bool DebugCheckVersionAndDataLayout(string version_str, uint sz_io, uint sz_style, uint sz_vec2, uint sz_vec4, uint sz_drawvert, uint sz_drawidx);
+        void DebugTextEncoding(string text);
         void DestroyContext();
         void DestroyContext(IntPtr ctx);
         void DestroyPlatformWindows();
-        void DockSpace(uint id);
-        void DockSpace(uint id, Vector2 size);
-        void DockSpace(uint id, Vector2 size, ImGuiDockNodeFlags flags);
-        void DockSpace(uint id, Vector2 size, ImGuiDockNodeFlags flags, ImGuiWindowClassPtr window_class);
+        uint DockSpace(uint id);
+        uint DockSpace(uint id, Vector2 size);
+        uint DockSpace(uint id, Vector2 size, ImGuiDockNodeFlags flags);
+        uint DockSpace(uint id, Vector2 size, ImGuiDockNodeFlags flags, ImGuiWindowClassPtr window_class);
         uint DockSpaceOverViewport();
         uint DockSpaceOverViewport(ImGuiViewportPtr viewport);
         uint DockSpaceOverViewport(ImGuiViewportPtr viewport, ImGuiDockNodeFlags flags);
@@ -14747,11 +14746,13 @@ namespace ImGuiNET
         bool DragIntRange2(string label, ref int v_current_min, ref int v_current_max, float v_speed, int v_min, int v_max, string format);
         bool DragIntRange2(string label, ref int v_current_min, ref int v_current_max, float v_speed, int v_min, int v_max, string format, string format_max);
         bool DragIntRange2(string label, ref int v_current_min, ref int v_current_max, float v_speed, int v_min, int v_max, string format, string format_max, ImGuiSliderFlags flags);
+        bool DragScalar(string label, ImGuiDataType data_type, IntPtr p_data);
         bool DragScalar(string label, ImGuiDataType data_type, IntPtr p_data, float v_speed);
         bool DragScalar(string label, ImGuiDataType data_type, IntPtr p_data, float v_speed, IntPtr p_min);
         bool DragScalar(string label, ImGuiDataType data_type, IntPtr p_data, float v_speed, IntPtr p_min, IntPtr p_max);
         bool DragScalar(string label, ImGuiDataType data_type, IntPtr p_data, float v_speed, IntPtr p_min, IntPtr p_max, string format);
         bool DragScalar(string label, ImGuiDataType data_type, IntPtr p_data, float v_speed, IntPtr p_min, IntPtr p_max, string format, ImGuiSliderFlags flags);
+        bool DragScalarN(string label, ImGuiDataType data_type, IntPtr p_data, int components);
         bool DragScalarN(string label, ImGuiDataType data_type, IntPtr p_data, int components, float v_speed);
         bool DragScalarN(string label, ImGuiDataType data_type, IntPtr p_data, int components, float v_speed, IntPtr p_min);
         bool DragScalarN(string label, ImGuiDataType data_type, IntPtr p_data, int components, float v_speed, IntPtr p_min, IntPtr p_max);
@@ -14762,6 +14763,7 @@ namespace ImGuiNET
         void EndChild();
         void EndChildFrame();
         void EndCombo();
+        void EndDisabled();
         void EndDragDropSource();
         void EndDragDropTarget();
         void EndFrame();
@@ -14816,9 +14818,11 @@ namespace ImGuiNET
         Vector2 GetItemRectMax();
         Vector2 GetItemRectMin();
         Vector2 GetItemRectSize();
-        int GetKeyIndex(ImGuiKey imgui_key);
-        int GetKeyPressedAmount(int key_index, float repeat_delay, float rate);
+        ImGuiKey GetKeyIndex(ImGuiKey key);
+        string GetKeyName(ImGuiKey key);
+        int GetKeyPressedAmount(ImGuiKey key, float repeat_delay, float rate);
         ImGuiViewportPtr GetMainViewport();
+        int GetMouseClickedCount(ImGuiMouseButton button);
         ImGuiMouseCursor GetMouseCursor();
         Vector2 GetMouseDragDelta();
         Vector2 GetMouseDragDelta(ImGuiMouseButton button);
@@ -14841,7 +14845,6 @@ namespace ImGuiNET
         string GetVersion();
         Vector2 GetWindowContentRegionMax();
         Vector2 GetWindowContentRegionMin();
-        float GetWindowContentRegionWidth();
         uint GetWindowDockID();
         float GetWindowDpiScale();
         ImDrawListPtr GetWindowDrawList();
@@ -14855,12 +14858,11 @@ namespace ImGuiNET
         void Image(IntPtr user_texture_id, Vector2 size, Vector2 uv0, Vector2 uv1);
         void Image(IntPtr user_texture_id, Vector2 size, Vector2 uv0, Vector2 uv1, Vector4 tint_col);
         void Image(IntPtr user_texture_id, Vector2 size, Vector2 uv0, Vector2 uv1, Vector4 tint_col, Vector4 border_col);
-        bool ImageButton(IntPtr user_texture_id, Vector2 size);
-        bool ImageButton(IntPtr user_texture_id, Vector2 size, Vector2 uv0);
-        bool ImageButton(IntPtr user_texture_id, Vector2 size, Vector2 uv0, Vector2 uv1);
-        bool ImageButton(IntPtr user_texture_id, Vector2 size, Vector2 uv0, Vector2 uv1, int frame_padding);
-        bool ImageButton(IntPtr user_texture_id, Vector2 size, Vector2 uv0, Vector2 uv1, int frame_padding, Vector4 bg_col);
-        bool ImageButton(IntPtr user_texture_id, Vector2 size, Vector2 uv0, Vector2 uv1, int frame_padding, Vector4 bg_col, Vector4 tint_col);
+        bool ImageButton(string str_id, IntPtr user_texture_id, Vector2 size);
+        bool ImageButton(string str_id, IntPtr user_texture_id, Vector2 size, Vector2 uv0);
+        bool ImageButton(string str_id, IntPtr user_texture_id, Vector2 size, Vector2 uv0, Vector2 uv1);
+        bool ImageButton(string str_id, IntPtr user_texture_id, Vector2 size, Vector2 uv0, Vector2 uv1, Vector4 bg_col);
+        bool ImageButton(string str_id, IntPtr user_texture_id, Vector2 size, Vector2 uv0, Vector2 uv1, Vector4 bg_col, Vector4 tint_col);
         void Indent();
         void Indent(float indent_w);
         bool InputDouble(string label, ref double v);
@@ -14920,10 +14922,10 @@ namespace ImGuiNET
         bool IsItemHovered(ImGuiHoveredFlags flags);
         bool IsItemToggledOpen();
         bool IsItemVisible();
-        bool IsKeyDown(int user_key_index);
-        bool IsKeyPressed(int user_key_index);
-        bool IsKeyPressed(int user_key_index, bool repeat);
-        bool IsKeyReleased(int user_key_index);
+        bool IsKeyDown(ImGuiKey key);
+        bool IsKeyPressed(ImGuiKey key);
+        bool IsKeyPressed(ImGuiKey key, bool repeat);
+        bool IsKeyReleased(ImGuiKey key);
         bool IsMouseClicked(ImGuiMouseButton button);
         bool IsMouseClicked(ImGuiMouseButton button, bool repeat);
         bool IsMouseDoubleClicked(ImGuiMouseButton button);
@@ -14975,6 +14977,8 @@ namespace ImGuiNET
         void NextColumn();
         void OpenPopup(string str_id);
         void OpenPopup(string str_id, ImGuiPopupFlags popup_flags);
+        void OpenPopup(uint id);
+        void OpenPopup(uint id, ImGuiPopupFlags popup_flags);
         void OpenPopupOnItemClick();
         void OpenPopupOnItemClick(string str_id);
         void OpenPopupOnItemClick(string str_id, ImGuiPopupFlags popup_flags);
@@ -15060,6 +15064,8 @@ namespace ImGuiNET
         void SetKeyboardFocusHere();
         void SetKeyboardFocusHere(int offset);
         void SetMouseCursor(ImGuiMouseCursor cursor_type);
+        void SetNextFrameWantCaptureKeyboard(bool want_capture_keyboard);
+        void SetNextFrameWantCaptureMouse(bool want_capture_mouse);
         void SetNextItemOpen(bool is_open);
         void SetNextItemOpen(bool is_open, ImGuiCond cond);
         void SetNextItemWidth(float item_width);
@@ -15074,6 +15080,7 @@ namespace ImGuiNET
         void SetNextWindowPos(Vector2 pos);
         void SetNextWindowPos(Vector2 pos, ImGuiCond cond);
         void SetNextWindowPos(Vector2 pos, ImGuiCond cond, Vector2 pivot);
+        void SetNextWindowScroll(Vector2 scroll);
         void SetNextWindowSize(Vector2 size);
         void SetNextWindowSize(Vector2 size, ImGuiCond cond);
         void SetNextWindowSizeConstraints(Vector2 size_min, Vector2 size_max);
@@ -15110,11 +15117,15 @@ namespace ImGuiNET
         void SetWindowSize(string name, Vector2 size, ImGuiCond cond);
         void ShowAboutWindow();
         void ShowAboutWindow(ref bool p_open);
+        void ShowDebugLogWindow();
+        void ShowDebugLogWindow(ref bool p_open);
         void ShowDemoWindow();
         void ShowDemoWindow(ref bool p_open);
         void ShowFontSelector(string label);
         void ShowMetricsWindow();
         void ShowMetricsWindow(ref bool p_open);
+        void ShowStackToolWindow();
+        void ShowStackToolWindow(ref bool p_open);
         void ShowStyleEditor();
         void ShowStyleEditor(ImGuiStylePtr @ref);
         bool ShowStyleSelector(string label);
@@ -15180,6 +15191,7 @@ namespace ImGuiNET
         void TableNextRow(ImGuiTableRowFlags row_flags, float min_row_height);
         void TableSetBgColor(ImGuiTableBgTarget target, uint color);
         void TableSetBgColor(ImGuiTableBgTarget target, uint color, int column_n);
+        void TableSetColumnEnabled(int column_n, bool v);
         bool TableSetColumnIndex(int column_n);
         void TableSetupColumn(string label);
         void TableSetupColumn(string label, ImGuiTableColumnFlags flags);
@@ -15200,7 +15212,6 @@ namespace ImGuiNET
         bool TreeNodeEx(IntPtr ptr_id, ImGuiTreeNodeFlags flags, string fmt);
         void TreePop();
         void TreePush(string str_id);
-        void TreePush();
         void TreePush(IntPtr ptr_id);
         void Unindent();
         void Unindent(float indent_w);
